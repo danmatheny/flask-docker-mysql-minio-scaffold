@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application Scaffolding</title>
+  </head>
+  <body>
+    <h1>Full Stack Flask, Docker, MySQL, MinIO Scaffolding</h1>
+
+    <p>
+      This application does very little. It is intended to show the way several
+      components can be combined together with Docker to create a full stack
+      application. This file shows that each component is working.
+    </p>
+
+    <h2>Flask</h2>
+    <p>
+      Flask handles the logic, routing, and templating. If you can see this
+      page, it is working.
+    </p>
+
+    <h2>MySQL</h2>
+    <p>
+      MySQL forms the database backend, via the SQLAlchemy package. Here is a
+      list of the entries of the "users" table:
+    </p>
+    <ul>
+      {% for user in users %}
+      <li>Name: {{user.name}}<br />Email: {{user.email}}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
