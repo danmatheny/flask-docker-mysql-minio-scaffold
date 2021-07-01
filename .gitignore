@@ -1,1 +1,3 @@
-app/env
+env
+flaskapp/__pycache__
+flaskapp.egg-info
