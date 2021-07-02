@@ -16,7 +16,7 @@ def index():
 def create_user():
     name = request.args.get("name")
     email = request.args.get("email")
-    print(name, email)
+
     if name and email:
         new_user = User(name=name, email=email)
         db.session.add(new_user)

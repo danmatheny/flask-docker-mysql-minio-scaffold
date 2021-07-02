@@ -6,5 +6,5 @@ from os import environ
 SECRET_KEY = "secret session key"
 
 # Database configuration
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:devdbpass@localhost:3306/testdb"
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:devdbpass@mysqldb/testdb"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
