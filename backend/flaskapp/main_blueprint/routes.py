@@ -23,3 +23,9 @@ def create_user():
         db.session.commit()
 
     return redirect(url_for("main_blueprint.index"))
+
+
+# Another test route
+@bp.route("/anothertest")
+def anothertest():
+    return "Another test route!!!"

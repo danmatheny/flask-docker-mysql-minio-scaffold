@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href={{url_for('static', filename="style.css")}}>
     <title>Application Scaffolding</title>
   </head>
   <body>
@@ -31,5 +32,12 @@
       <li>Name: {{user.name}}<br />Email: {{user.email}}</li>
       {% endfor %}
     </ul>
+
+    <h2>Static Files</h2>
+    <p>Static files such as CSS and site images can be served by the Flask server, but it is recommended that they instead be served by an application more suited to the task, such as Nginx. Nginx will serve as a proxy in front of the app, routing most traffic to the Flask application, but will serve the <code>/static</code> folder itself.</p>
+
+    <p>If this page has non-default styling and you can see the image below, static files are being served.</p>
+
+    <img src={{url_for('static', filename='cinque-terre-bjorn-snelders-PeLkhi_B3wI-unsplash.jpg')}} alt="Cinque Terre" title="Cinque Terre">
   </body>
 </html>

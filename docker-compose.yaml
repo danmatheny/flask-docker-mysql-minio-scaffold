@@ -2,24 +2,50 @@ services:
   flaskapp:
     build:
       context: ./backend
+    image: flaskapp
+    depends_on:
+      - mysqldb
+    restart: unless-stopped
     ports:
       - 5000:5000
     volumes:
       - ./backend:/src
+    networks:
+      - backend-network
     environment:
       FLASK_ENV: development
-    depends_on:
-      - mysqldb
+      SESSION_KEY: ${SESSION_KEY}
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
 
   mysqldb:
     image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: devdbpass
-      MYSQL_DATABASE: testdb
+    restart: unless-stopped
     volumes:
       - mysql-data:/var/lib/mysql
       - mysql-config:/etc/mysql
+    networks:
+      - backend-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    command: --default-authentication-plugin=mysql_native_password
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks:
+      - backend-network
 
 volumes:
   mysql-data:
   mysql-config:
+
+networks:
+  backend-network:

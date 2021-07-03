@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.9-slim-buster
+FROM python:3.9-slim
 
 WORKDIR /src
 
@@ -15,4 +15,4 @@ ENV FLASK_ENV=production
 
 EXPOSE 5000
 
-CMD ["flask", "run"]
+CMD ["flask", "run", "--host=0.0.0.0"]

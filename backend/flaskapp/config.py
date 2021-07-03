@@ -2,9 +2,16 @@
 
 from os import environ
 
+# Environment Variables needed:
+# SESSION_KEY
+# MYSQL_USER
+# MYSQL_PASSWORD
+# MYSQL_HOST
+# MYSQL_DATABASE
+
 # Flask configuration
-SECRET_KEY = "secret session key"
+SECRET_KEY = environ.get("SESSION_KEY")
 
 # Database configuration
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:devdbpass@mysqldb/testdb"
+SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{environ.get("MYSQL_USER")}:{environ.get("MYSQL_PASSWORD")}@{environ.get("MYSQL_HOST")}/{environ.get("MYSQL_DATABASE")}'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
