@@ -11,21 +11,31 @@ def index():
     return render_template("index.html", users=users)
 
 
-# Create a user via query strings
-@bp.route("/createuser")
-def create_user():
-    name = request.args.get("name")
-    email = request.args.get("email")
+# Create and delete database entries
+@bp.route("/editusers", methods=["GET", "POST"])
+def edit_users():
+    # On POST requests, process the form data and modify the database
+    if request.method == "POST":
+        # Create a new user
+        new_user_name = request.form.get("add_name")
+        new_user_email = request.form.get("add_email")
+        if new_user_name and new_user_email:
+            new_user = User(name=new_user_name, email=new_user_email)
+            db.session.add(new_user)
 
-    if name and email:
-        new_user = User(name=name, email=email)
-        db.session.add(new_user)
+        # Remove users
+        user_ids_to_remove = request.form.getlist("remove")
+        for id in user_ids_to_remove:
+            user = User.query.get(id)
+            if user:
+                db.session.delete(user)
+
+        # Commit the database session
         db.session.commit()
 
-    return redirect(url_for("main_blueprint.index"))
+        return redirect(url_for("main_blueprint.index"))
 
+    # On GET requests, display the form to modify the database
+    users = User.query.all()
 
-# Another test route
-@bp.route("/anothertest")
-def anothertest():
-    return "Another test route!!!"
+    return render_template("edit_users.html", users=users)

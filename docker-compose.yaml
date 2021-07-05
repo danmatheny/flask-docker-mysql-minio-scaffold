@@ -1,16 +1,26 @@
 services:
+  nginx:
+    build:
+      context: ./nginx
+    restart: unless-stopped
+    ports:
+      - 8085:80
+    networks:
+      - frontend-network
+
   flaskapp:
     build:
       context: ./backend
-    image: flaskapp
+    # image: flaskapp
     depends_on:
       - mysqldb
     restart: unless-stopped
-    ports:
-      - 5000:5000
+    expose:
+      - '5000'
     volumes:
       - ./backend:/src
     networks:
+      - frontend-network
       - backend-network
     environment:
       FLASK_ENV: development
@@ -48,4 +58,5 @@ volumes:
   mysql-config:
 
 networks:
+  frontend-network:
   backend-network:

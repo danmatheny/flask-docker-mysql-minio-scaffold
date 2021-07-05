@@ -2,6 +2,12 @@
 
 FROM python:3.9-slim
 
+RUN apt-get clean \
+  && apt-get -y update \
+  && apt-get -y install gcc
+
+RUN pip install wheel
+
 WORKDIR /src
 
 COPY requirements.txt requirements.txt
@@ -15,4 +21,6 @@ ENV FLASK_ENV=production
 
 EXPOSE 5000
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+# CMD ["flask", "run", "--host=0.0.0.0"]
+
+CMD ["uwsgi", "uwsgi.ini"]

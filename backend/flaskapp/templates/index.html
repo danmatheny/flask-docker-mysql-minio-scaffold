@@ -1,43 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href={{url_for('static', filename="style.css")}}>
-    <title>Application Scaffolding</title>
-  </head>
-  <body>
-    <h1>Full Stack Flask, Docker, MySQL, MinIO Scaffolding</h1>
+{% extends "base_template.html" %} {% block title %}Home{% endblock title %} {%
+block body %}
+<h1>Full Stack Flask, Docker, MySQL, MinIO Scaffolding</h1>
 
-    <p>
-      This application does very little. It is intended to show the way several
-      components can be combined together with Docker to create a full stack
-      application. This file shows that each component is working.
-    </p>
+<p>
+  This application does very little. It is intended to show the way several
+  components can be combined together with Docker to create a full stack
+  application. This file shows that each component is working.
+</p>
 
-    <h2>Flask</h2>
-    <p>
-      Flask handles the logic, routing, and templating. If you can see this
-      page, it is working.
-    </p>
+<h2>Flask</h2>
+<p>
+  Flask handles the logic, routing, and templating. If you can see this page, it
+  is working.
+</p>
 
-    <h2>MySQL</h2>
-    <p>
-      MySQL forms the database backend, via the SQLAlchemy package. Here is a
-      list of the entries of the "users" table:
-    </p>
-    <ul>
-      {% for user in users %}
-      <li>Name: {{user.name}}<br />Email: {{user.email}}</li>
-      {% endfor %}
-    </ul>
+<h2>MySQL</h2>
+<p>
+  MySQL forms the database backend, via the SQLAlchemy package. Here is a list
+  of the entries of the "users" table:
+</p>
+<ul>
+  {% for user in users %}
+  <li>Name: {{user.name}}<br />Email: {{user.email}}</li>
+  {% endfor %}
+</ul>
+<p>You can modify the database contents <a href={{ url_for("main_blueprint.edit_users") }}>here.</a></p>
 
-    <h2>Static Files</h2>
-    <p>Static files such as CSS and site images can be served by the Flask server, but it is recommended that they instead be served by an application more suited to the task, such as Nginx. Nginx will serve as a proxy in front of the app, routing most traffic to the Flask application, but will serve the <code>/static</code> folder itself.</p>
+<h2>Static Files</h2>
+<p>
+  Static files such as CSS and site images can be served by the Flask server,
+  but it is recommended that they instead be served by an application more
+  suited to the task, such as Nginx. Nginx will serve as a proxy in front of the
+  app, routing most traffic to the Flask application, but will serve the
+  <code>/static</code> folder itself.
+</p>
 
-    <p>If this page has non-default styling and you can see the image below, static files are being served.</p>
+<p>
+  If this page has non-default styling and you can see the image below, static
+  files are being served, though not necessarily by Nginx.
+</p>
 
-    <img src={{url_for('static', filename='cinque-terre-bjorn-snelders-PeLkhi_B3wI-unsplash.jpg')}} alt="Cinque Terre" title="Cinque Terre">
-  </body>
-</html>
+<img src={{url_for('static',
+filename='cinque-terre-bjorn-snelders-PeLkhi_B3wI-unsplash.jpg')}} alt="Cinque
+Terre" title="Cinque Terre"> {% endblock body %}

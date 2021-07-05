@@ -1,0 +1,38 @@
+{% extends "base_template.html" %}
+
+{% block title %}Edit Database{% endblock title %}
+
+{% block body %}
+<h1>Edit Database</h1>
+
+<p>You can use the form below to modify the database contents.</p>
+
+<form action={{ url_for('main_blueprint.edit_users') }} method="POST">
+<h2>Add User</h2>
+  <label for="add_name">Name:</label><br>
+  <input type="text" id="add_name" name="add_name">
+  <br>
+  <label for="add_email">Email:</label><br>
+  <input type="email" id="add_email" name="add_email">
+
+  <table>
+    <tr>
+      <td>Remove User</td>
+      <td>ID</td>
+      <td>Name</td>
+      <td>Email</td>
+    </tr>
+    {% for user in users %}
+    <tr>
+      <td><input type="checkbox" id="remove-{{ user.id }}" name="remove" value={{ user.id }}></td>
+      <td>{{ user.id }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <br>
+  <button type="submit">Submit Changes</button>
+</form>
+{% endblock body %}
