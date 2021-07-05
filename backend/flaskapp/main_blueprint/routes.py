@@ -33,7 +33,8 @@ def edit_users():
         # Commit the database session
         db.session.commit()
 
-        return redirect(url_for("main_blueprint.index"))
+        # return redirect(url_for("main_blueprint.index"))
+        return redirect(url_for(".index"))
 
     # On GET requests, display the form to modify the database
     users = User.query.all()

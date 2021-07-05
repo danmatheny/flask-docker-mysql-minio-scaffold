@@ -1,36 +1,54 @@
 services:
-  nginx:
-    build:
-      context: ./nginx
-    image: flaskapp-nginx
-    restart: unless-stopped
-    ports:
-      - 8080:80
-    volumes:
-      - flaskapp-static:/static
-    networks:
-      - frontend-network
-
   flaskapp:
     build:
       context: ./backend
-    image: flaskapp
+    image: flaskapp-dev
     depends_on:
       - mysqldb
     restart: unless-stopped
     expose:
       - '5000'
     volumes:
+      - ./backend:/src
       - flaskapp-static:/src/flaskapp/static
     networks:
       - frontend-network
       - backend-network
     environment:
+      FLASK_ENV: development
       SESSION_KEY: ${SESSION_KEY}
       MYSQL_HOST: mysqldb
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    command: ['flask', 'run', '--host=0.0.0.0']
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile-dev
+    image: flaskapp-nginx-dev
+    restart: unless-stopped
+    ports:
+      - 5000:80
+    volumes:
+      - flaskapp-static:/static
+    networks:
+      - frontend-network
+
+  minio:
+    image: minio/minio
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    volumes:
+      - minio-storage:/data
+    networks:
+      - frontend-network
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: devstoragepass
+    command: ['server', '/data']
 
   mysqldb:
     image: mysql
@@ -47,10 +65,19 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     command: --default-authentication-plugin=mysql_native_password
 
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8082:8082
+    networks:
+      - backend-network
+
 volumes:
   mysql-data:
   mysql-config:
   flaskapp-static:
+  minio-storage:
 
 networks:
   frontend-network:
