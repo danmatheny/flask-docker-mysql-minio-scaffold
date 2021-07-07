@@ -1,6 +1,6 @@
 # SQLAlchemy models
 
-from . import db
+from flaskapp import db
 
 
 class User(db.Model):

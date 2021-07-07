@@ -1,18 +1,10 @@
 from flask import Blueprint, request, render_template, redirect, url_for
-from ..models import db, User
+from .models import db, User
 
-bp = Blueprint("main_blueprint", __name__)
+bp = Blueprint("database", __name__, url_prefix="/database")
 
-
-@bp.route("/")
-def index():
-    # Get all users from the database
-    users = User.query.all()
-    return render_template("index.html", users=users)
-
-
-# Create and delete database entries
-@bp.route("/editusers", methods=["GET", "POST"])
+# Create and edit users in the database
+@bp.route("/", methods=["GET", "POST"])
 def edit_users():
     # On POST requests, process the form data and modify the database
     if request.method == "POST":
@@ -33,8 +25,7 @@ def edit_users():
         # Commit the database session
         db.session.commit()
 
-        # return redirect(url_for("main_blueprint.index"))
-        return redirect(url_for(".index"))
+        return redirect(url_for("main.index"))
 
     # On GET requests, display the form to modify the database
     users = User.query.all()

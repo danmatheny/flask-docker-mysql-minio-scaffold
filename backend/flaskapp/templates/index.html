@@ -24,7 +24,12 @@ block body %}
   <li>Name: {{user.name}}<br />Email: {{user.email}}</li>
   {% endfor %}
 </ul>
-<p>You can modify the database contents <a href={{ url_for("main_blueprint.edit_users") }}>here.</a></p>
+<p>You can modify the database contents <a href={{ url_for("database.edit_users") }}>here.</a></p>
+
+<h2>S3 Storage</h2>
+<p>
+  Files are stored in MinIO, a storage server that is compatible with Amazon's S3 storage API. You can explore the files currently in the storage space <a href={{ url_for("storage.explore_storage")}}>here.</a>
+</p>
 
 <h2>Static Files</h2>
 <p>

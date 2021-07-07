@@ -7,7 +7,7 @@
 
 <p>You can use the form below to modify the database contents.</p>
 
-<form action={{ url_for('main_blueprint.edit_users') }} method="POST">
+<form action={{ url_for('database.edit_users') }} method="POST">
 <h2>Add User</h2>
   <label for="add_name">Name:</label><br>
   <input type="text" id="add_name" name="add_name">
@@ -35,4 +35,6 @@
   <br>
   <button type="submit">Submit Changes</button>
 </form>
+
+<p>Go back to <a href={{ url_for("main.index") }}>home.</a></p>
 {% endblock body %}

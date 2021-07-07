@@ -1,0 +1,45 @@
+{% extends "base_template.html" %} {% block title %}Explore Storage{% endblock
+title %} {% block body %}
+
+<h1>Explore Storage</h1>
+
+<p>
+  Here is a list of all the buckets in the S3 storage space and all the objects
+  in the buckets.
+</p>
+
+{% for bucket in files.buckets %}
+
+<h2>{{bucket.bucket_name}}</h2>
+{% if bucket.objects %}
+<ul>
+  {% for object in bucket.objects %}
+  <li>{{object.object_name}} (size: {{object.size}})</li>
+  {% endfor %}
+</ul>
+
+{% else %}
+<p>There are no objects in this bucket</p>
+{% endif %} {% endfor %}
+
+<h1>Upload a File</h1>
+<p>Use the form below to upload a file to the S3 storage space.</p>
+<form action={{ url_for("storage.explore_storage") }} method="POST" enctype="multipart/form-data">
+  <label for="file">Choose File: </label><br>
+  <input type="file" name="file" id="file"><br>
+  <br>
+  <label for="bucket">Bucket:</label>
+  <select name="bucket" id="bucket">
+    {% for bucket in files.buckets %}
+    <option value={{ bucket.bucket_name }}>{{ bucket.bucket_name }}</option>
+    {% endfor %}
+  </select><br><br>
+  <label for="folder">Folder Name:</label><br>
+  <input type="text" name="folder" id="folder"><br>
+  <br>
+  <button type="submit">Upload File</button>
+</form>
+
+<p>Go back to <a href={{ url_for("main.index") }}>home.</a></p>
+
+{% endblock body %}
