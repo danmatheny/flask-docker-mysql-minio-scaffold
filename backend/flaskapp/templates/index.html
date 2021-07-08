@@ -45,6 +45,15 @@ block body %}
   files are being served, though not necessarily by Nginx.
 </p>
 
-<img src={{url_for('static',
+<img src={{ url_for('static',
 filename='cinque-terre-bjorn-snelders-PeLkhi_B3wI-unsplash.jpg')}} alt="Cinque
-Terre" title="Cinque Terre"> {% endblock body %}
+Terre" title="Cinque Terre">
+<h2>S3 Images</h2>
+
+<p>You may want to use your S3 storage to host images for your application. If using a cloud service like AWS S3, every object has a URL associated with it.  The same is true of MinIO (the self-hosted S3-compatible storage server we are using). The difference is that we are not directly exposing MinIO to users (though we could). So we must use Nginx to proxy requests for images to the MinIO server.  If you can see the image below, it is working.</p>
+
+<img src={{ url_for('main.s3image', bucket_name='bucket1', object_name='IMG_2867.JPG')}}>
+
+<p>(Note: You need to have uploaded an image and referenced it in the HTML above for this to work. Also, the current setup does not check for type, so you can use this same method to pass along requests for any file in the S3 storage, not just images.)</p>
+
+{% endblock body %}

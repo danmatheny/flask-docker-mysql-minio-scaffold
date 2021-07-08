@@ -1,10 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_minio import Minio
 from sqlalchemy.exc import OperationalError
 from time import sleep
 
 # Database object
 db = SQLAlchemy()
+
+# Minio client object
+s3 = Minio()
 
 # Application Factory
 def create_app():
@@ -13,6 +17,7 @@ def create_app():
 
     # Register Database
     db.init_app(app)
+    s3.init_app(app)
 
     # Import Blueprints
     from .main.routes import bp as main_routes

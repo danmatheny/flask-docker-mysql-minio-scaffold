@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
-from .s3 import s3
+from flaskapp import s3
 
 bp = Blueprint("storage", __name__, url_prefix="/storage")
 
@@ -9,6 +9,7 @@ bp = Blueprint("storage", __name__, url_prefix="/storage")
 # List all objects in the s3 storage space
 @bp.route("/", methods=["GET", "POST"])
 def explore_storage():
+    # Request type POST
     if request.method == "POST":
         if "file" in request.files:
             # Upload file object
@@ -26,20 +27,21 @@ def explore_storage():
             # seek to its beginning, so you might save it entirely
             file.seek(0)
         try:
-            s3.put_object(bucket, filename, file, file_size)
+            s3.connection.put_object(bucket, filename, file, file_size)
         except Exception as error:
             print("File upload failed: ", error)
 
         return redirect(url_for("storage.explore_storage"))
 
+    # Request type GET
     # Create a dictionary of all objects in all buckets
     buckets = []
-    for bucket in s3.list_buckets():
+    for bucket in s3.connection.list_buckets():
         bucket_entry = {"bucket_name": bucket.name}
 
         # Get all objects in the bucket
         objects = []
-        for object in s3.list_objects(bucket.name, recursive=True):
+        for object in s3.connection.list_objects(bucket.name, recursive=True):
             object_entry = {
                 "object_name": object.object_name,
                 "content_type": object.content_type,

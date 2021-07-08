@@ -3,6 +3,7 @@ cffi==1.14.5
 click==8.0.1
 cryptography==3.4.7
 Flask==2.0.1
+Flask-Minio==0.1.2
 Flask-SQLAlchemy==2.5.1
 greenlet==1.1.0
 itsdangerous==2.0.1

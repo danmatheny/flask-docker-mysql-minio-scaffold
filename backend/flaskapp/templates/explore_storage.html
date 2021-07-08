@@ -14,7 +14,7 @@ title %} {% block body %}
 {% if bucket.objects %}
 <ul>
   {% for object in bucket.objects %}
-  <li>{{object.object_name}} (size: {{object.size}})</li>
+  <li>{{object.object_name}} (size: {{object.size}}) (type: {{object.type}})</li>
   {% endfor %}
 </ul>
 
@@ -23,7 +23,7 @@ title %} {% block body %}
 {% endif %} {% endfor %}
 
 <h1>Upload a File</h1>
-<p>Use the form below to upload a file to the S3 storage space.</p>
+<p>Use the form below to upload a file to the S3 storage space. (Note: 10MB max size)</p>
 <form action={{ url_for("storage.explore_storage") }} method="POST" enctype="multipart/form-data">
   <label for="file">Choose File: </label><br>
   <input type="file" name="file" id="file"><br>
