@@ -14,7 +14,7 @@ title %} {% block body %}
 {% if bucket.objects %}
 <ul>
   {% for object in bucket.objects %}
-  <li>{{object.object_name}} (size: {{object.size}}) (type: {{object.type}})</li>
+  <li>{{object.object_name}} (size: {{object.size}})</li>
   {% endfor %}
 </ul>
 
@@ -28,12 +28,18 @@ title %} {% block body %}
   <label for="file">Choose File: </label><br>
   <input type="file" name="file" id="file"><br>
   <br>
+  
+  <label for="new-bucket">Create new public bucket: </label><br>
+  <input type="text" name="new-bucket" id="new-bucket">
+  <p>Note: New buckets will not be available until after this form is submitted.</p>
+
   <label for="bucket">Bucket:</label>
   <select name="bucket" id="bucket">
     {% for bucket in files.buckets %}
     <option value={{ bucket.bucket_name }}>{{ bucket.bucket_name }}</option>
     {% endfor %}
   </select><br><br>
+  
   <label for="folder">Folder Name:</label><br>
   <input type="text" name="folder" id="folder"><br>
   <br>

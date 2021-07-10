@@ -31,6 +31,7 @@ def create_app():
 
     with app.app_context():
         # Try every 0.5 seconds to connect to the database
+        # Note: Not sure if this fixes the initial connect problem or not.
         while True:
             try:
                 # Create database tables

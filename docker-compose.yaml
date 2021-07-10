@@ -1,8 +1,6 @@
 services:
   flaskapp:
-    build:
-      context: ./backend
-    image: flaskapp
+    image: danmatheny/fullstack-flaskapp-scaffold
     depends_on:
       - mysqldb
     restart: unless-stopped
@@ -24,9 +22,7 @@ services:
       S3_SECRET_KEY: ${S3_SECRET_KEY}
 
   nginx:
-    build:
-      context: ./nginx
-    image: flaskapp-nginx
+    image: danmatheny/fullstack-flaskapp-scaffold-nginx
     restart: unless-stopped
     ports:
       - 8080:80
@@ -50,7 +46,7 @@ services:
     command: ['server', '/data']
 
   mysqldb:
-    image: mysql
+    image: mariadb
     restart: unless-stopped
     volumes:
       - mysql-data:/var/lib/mysql

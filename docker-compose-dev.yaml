@@ -54,7 +54,7 @@ services:
     command: ['server', '/data']
 
   mysqldb:
-    image: mysql
+    image: mariadb
     restart: unless-stopped
     volumes:
       - mysql-data:/var/lib/mysql

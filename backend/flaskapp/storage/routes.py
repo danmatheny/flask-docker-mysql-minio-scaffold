@@ -1,3 +1,5 @@
+from werkzeug.local import F
+from flaskapp.storage.operations import create_public_bucket, upload_object
 from flask import Blueprint, request, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
@@ -20,16 +22,12 @@ def explore_storage():
             if folder:
                 filename = folder + "/" + filename
 
-            # seek to the end of the file to tell its size
-            file.seek(0, os.SEEK_END)
-            file_size = file.tell()
+            if file:
+                upload_object(bucket, filename, file)
 
-            # seek to its beginning, so you might save it entirely
-            file.seek(0)
-        try:
-            s3.connection.put_object(bucket, filename, file, file_size)
-        except Exception as error:
-            print("File upload failed: ", error)
+        new_bucket_name = request.form.get("new-bucket")
+        if new_bucket_name:
+            create_public_bucket(new_bucket_name)
 
         return redirect(url_for("storage.explore_storage"))
 
