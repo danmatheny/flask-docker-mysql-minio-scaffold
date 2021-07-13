@@ -33,7 +33,7 @@ services:
     image: flaskapp-nginx-dev
     restart: unless-stopped
     ports:
-      - 5000:80
+      - ${PORT}:80
     volumes:
       - flaskapp-static:/static
     networks:
