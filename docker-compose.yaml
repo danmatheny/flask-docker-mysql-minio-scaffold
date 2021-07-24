@@ -1,16 +1,16 @@
 services:
   flaskapp:
     image: danmatheny/fullstack-flaskapp-scaffold
+    # build:
+    #   context: ./backend
+    # image: flaskapp-prod
     depends_on:
       - mysqldb
     restart: unless-stopped
     expose:
       - '5000'
-    volumes:
-      - flaskapp-static:/src/flaskapp/static
     networks:
-      - frontend-network
-      - backend-network
+      - app-network
     environment:
       SESSION_KEY: ${SESSION_KEY}
       MYSQL_HOST: mysqldb
@@ -23,13 +23,15 @@ services:
 
   nginx:
     image: danmatheny/fullstack-flaskapp-scaffold-nginx
+    # build:
+    #   context: .
+    #   dockerfile: ./nginx/Dockerfile
+    # image: flaskapp-nginx-prod
     restart: unless-stopped
     ports:
       - ${PORT}:80
-    volumes:
-      - flaskapp-static:/static
     networks:
-      - frontend-network
+      - app-network
 
   minio:
     image: minio/minio
@@ -39,7 +41,7 @@ services:
     volumes:
       - minio-storage:/data
     networks:
-      - frontend-network
+      - app-network
     environment:
       MINIO_ROOT_USER: ${S3_ACCESS_KEY}
       MINIO_ROOT_PASSWORD: ${S3_SECRET_KEY}
@@ -52,7 +54,7 @@ services:
       - mysql-data:/var/lib/mysql
       - mysql-config:/etc/mysql
     networks:
-      - backend-network
+      - app-network
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
@@ -63,9 +65,7 @@ services:
 volumes:
   mysql-data:
   mysql-config:
-  flaskapp-static:
   minio-storage:
 
 networks:
-  frontend-network:
-  backend-network:
+  app-network:

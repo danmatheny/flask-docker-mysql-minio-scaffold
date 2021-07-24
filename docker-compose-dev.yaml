@@ -10,10 +10,8 @@ services:
       - '5000'
     volumes:
       - ./backend:/src
-      - flaskapp-static:/src/flaskapp/static
     networks:
-      - frontend-network
-      - backend-network
+      - app-network
     environment:
       FLASK_ENV: development
       SESSION_KEY: ${SESSION_KEY}
@@ -34,10 +32,8 @@ services:
     restart: unless-stopped
     ports:
       - ${PORT}:80
-    volumes:
-      - flaskapp-static:/static
     networks:
-      - frontend-network
+      - app-network
 
   minio:
     image: minio/minio
@@ -47,7 +43,7 @@ services:
     volumes:
       - minio-storage:/data
     networks:
-      - frontend-network
+      - app-network
     environment:
       MINIO_ROOT_USER: ${S3_ACCESS_KEY}
       MINIO_ROOT_PASSWORD: ${S3_SECRET_KEY}
@@ -60,7 +56,7 @@ services:
       - mysql-data:/var/lib/mysql
       - mysql-config:/etc/mysql
     networks:
-      - backend-network
+      - app-network
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
@@ -74,14 +70,12 @@ services:
     ports:
       - 8082:8082
     networks:
-      - backend-network
+      - app-network
 
 volumes:
   mysql-data:
   mysql-config:
-  flaskapp-static:
   minio-storage:
 
 networks:
-  frontend-network:
-  backend-network:
+  app-network:

@@ -18,11 +18,13 @@ Note: Repeated builds will generate a lot of "dangling" images, which occur when
 
 The production files are given the default names, so the command to run the stack is much simpler:
 
-    docker-compose up
+    docker-compose up -d
 
 You can also be more verbose:
 
-    docker-compose -f docker-compose.yaml --env-file .env up
+    docker-compose -f docker-compose.yaml --env-file .env up -d
+
+(Here the `-d` option is to run in "detached" mode, so the logs will not be displayed to the console.)
 
 However, the production stack does not build and run the local container images, but instead pulls them from the container repository (in this case Docker Hub).
 
@@ -32,10 +34,21 @@ To build the images, using a multi-architecture build (x86 64-bit and ARM 64-bit
 
 Then build and push to the repository (must be logged in with `docker login`):
 
-    docker buildx build -t danmatheny/fullstack-flaskapp-scaffold --platform linux/amd64,linux/arm64 --push builder
+    docker buildx build \
+        -t danmatheny/fullstack-flaskapp-scaffold \
+        --platform linux/amd64,linux/arm64 \
+        --push \
+        backend
 
 and
 
-    docker buildx build -t danmatheny/fullstack-flaskapp-scaffold-nginx --platform linux/amd64,linux/arm64 --push nginx
+    docker buildx build \
+        -t danmatheny/fullstack-flaskapp-scaffold-nginx \
+        --platform linux/amd64,linux/arm64 \
+        --push \
+        --file ./nginx/Dockerfile \
+        .
 
-This builds two images, the main flask app image (in the `backend` folder) and the custom nginx proxy (in the `nginx` folder)
+This builds two images, the main Flask app image (build context in the `backend` folder) and the custom Nginx reverse proxy (build context in the project root (i.e. `.`) directory).
+
+Note: The build context for the Nginx image must include the `backend` folder because the `Dockerfile` will copy the static files from the Flask application to the Nginx container. Since we have the `Dockerfile` for the Nginx image in the `nginx` directory, we need to specify a path to the `Dockerfile`.
